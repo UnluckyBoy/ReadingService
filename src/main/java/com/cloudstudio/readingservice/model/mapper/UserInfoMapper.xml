@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloudstudio.readingservice.model.mapper.UserInfoMapper">
+
+    <!-- ***当数据库中的字段信息与Bean对象的属性不一致时需要通过resultMap来映射,防止异常-用户信息Bean*** -->
+    <resultMap type="com.cloudstudio.readingservice.model.UserInfo" id="BaseInfoMap" autoMapping="true">
+        <result property="mId" column="uId"/>
+        <result property="mHead" column="uHead"/>
+        <result property="mName" column="uName"/>
+        <result property="mPassword" column="uPassword"/>
+        <result property="mSex" column="uSex"/>
+        <result property="mAccount" column="uAccount"/>
+        <result property="mPhone" column="uPhone"/>
+        <result property="mEmail" column="uEmail"/>
+        <result property="mLevel" column="uLevel"/>
+        <result property="mStatus" column="uStatus"/>
+        <result property="mAddressIp" column="uAddressIp"/>
+    </resultMap>
+
+    <!--用户信息处理逻辑-->
+    <!--账号查询-->
+    <select id="infoQuery" parameterType="java.util.HashMap" resultMap="BaseInfoMap">
+        select uId,
+        uHead,
+        uName,
+        uPassword,
+        uSex,
+        uAccount,
+        uPhone,
+        uEmail,
+        uLevel,
+        uStatus,
+        uAddressIp
+        from user_info_data
+        <where>
+            <if test="account!=null">
+                uAccount=#{account}
+            </if>
+            <if test="password!=null">
+                and uPassword=#{password,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--登录-->
+    <select id="login" parameterType="java.util.HashMap" resultMap="BaseInfoMap">
+        select uId,
+        uHead,
+        uName,
+        <!--uPassword,-->
+        uSex,
+        uAccount,
+        uPhone,
+        uEmail,
+        uLevel,
+        uStatus,
+        uAddressIp
+        from user_info_data
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password!=null">
+                and uPassword=#{password,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--昵称搜索-->
+    <select id="fuzzyQuery" parameterType="String" resultMap="BaseInfoMap">
+        select uId,
+        uHead,
+        uName,
+        uPassword,
+        uSex,
+        uAccount,
+        uPhone,
+        uEmail,
+        uLevel,
+        uStatus,
+        uAddressIp
+        from user_info_data
+        <where>
+            <if test="name!=null">
+                uName LIKE CONCAT(CONCAT('%', #{name}),'%')
+            </if>
+        </where>
+    </select>
+    <!--查询普通用户数-->
+    <select id="getUserCount" resultType="int">
+        select COUNT(*) from user_info_data where uLevel=0
+    </select>
+    <!--查询普通用户在线数-->
+    <select id="getUserOnlineCount" resultType="int">
+        select COUNT(*) from user_info_data where uLevel=0 and uStatus=1
+    </select>
+
+    <!--注册-->
+    <insert id="register" parameterType="java.util.HashMap">
+        insert into user_info_data
+            (uHead,uName,uAccount,uPassword,uSex) values (#{head},#{name},#{account},#{password},#{sex})
+    </insert>
+
+    <!--更新登录状态-->
+    <update id="fresh_status_login" parameterType="java.util.HashMap">
+        update user_info_data
+        <set >
+            <if test="status!=0">
+                uStatus=#{status},
+            </if>
+            <if test="addressIp!=null">
+                uAddressIp=#{addressIp}
+            </if>
+        </set>
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password!=null">
+                and uPassword=#{password,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <!--登出更新状态-->
+    <update id="fresh_status_logout" parameterType="java.util.HashMap">
+        update  user_info_data
+        <set >
+            <if test="status==0">
+                uStatus=#{status}
+            </if>
+        </set>
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password!=null">
+                and uPassword=#{password,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <!--更新头像-->
+    <update id="fresh_head" parameterType="java.util.HashMap">
+        update  user_info_data
+        <set >
+            <if test="head!=null">
+                uHead=#{head}
+            </if>
+        </set>
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+    <!--更新用户:昵称,phone,email等-->
+    <update id="fresh_segment_info" parameterType="java.util.HashMap">
+        update  user_info_data
+        <set >
+            <if test="name!=null">
+                uName=#{name},
+            </if>
+            <if test="phone!=null">
+                uPhone=#{phone},
+            </if>
+            <if test="email!=null">
+                uEmail=#{email}
+            </if>
+        </set>
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+    <!--更新用户信息-->
+    <update id="update_user_info" parameterType="java.util.HashMap">
+        update  user_info_data
+        <set >
+            <if test="name!=null">
+                uName=#{name},
+            </if>
+            <if test="password!=null">
+                uPassword=#{password},
+            </if>
+            <if test="sex!=null">
+                uSex=#{sex},
+            </if>
+            <if test="phone!=null">
+                uPhone=#{phone},
+            </if>
+            <if test="email!=null">
+                uEmail=#{email},
+            </if>
+            <if test="level!=null">
+                uLevel=#{level}
+            </if>
+        </set>
+        <where>
+            <if test="account!=null">
+                uAccount=#{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+</mapper>
