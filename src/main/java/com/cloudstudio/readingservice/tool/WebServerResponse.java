@@ -11,7 +11,7 @@ import lombok.Data;
 public class WebServerResponse {
     private boolean handleType;//处理状态
     private int handleCode;//处理代码
-    private String handleToken;
+    private String Authorization;
     private String handleMessage;//处理描述
     private Object handleData;//处理数据
 
@@ -53,7 +53,7 @@ public class WebServerResponse {
         WebServerResponse resultResponse=new WebServerResponse();
         resultResponse.setHandleType(true);
         resultResponse.setHandleCode(200);
-        resultResponse.setHandleToken(token);
+        resultResponse.setAuthorization("Bearer " +token);
         resultResponse.setHandleMessage(message);
         resultResponse.setHandleData(object);
         return resultResponse;
