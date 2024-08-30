@@ -2,6 +2,8 @@ package com.cloudstudio.readingservice.tool;
 
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * @ClassName WebServerResponse
  * @Author Create By matrix
@@ -49,6 +51,15 @@ public class WebServerResponse {
         resultResponse.setHandleData(object);
         return resultResponse;
     }
+    public static WebServerResponse success(String message, Map<String,Object> map){
+        WebServerResponse resultResponse=new WebServerResponse();
+        resultResponse.setHandleType(true);
+        resultResponse.setHandleCode(200);
+        //resultResponse.setAuthorization("Bearer " +token);
+        resultResponse.setHandleMessage(message);
+        resultResponse.setHandleData(map);
+        return resultResponse;
+    }
     public static WebServerResponse success(String message,String token,Object object){
         WebServerResponse resultResponse=new WebServerResponse();
         resultResponse.setHandleType(true);
@@ -70,6 +81,14 @@ public class WebServerResponse {
         WebServerResponse resultResponse=new WebServerResponse();
         resultResponse.setHandleType(false);
         resultResponse.setHandleCode(404);
+        resultResponse.setHandleMessage(message);
+        resultResponse.setHandleData(null);
+        return resultResponse;
+    }
+    public static WebServerResponse abnormal(String message){
+        WebServerResponse resultResponse=new WebServerResponse();
+        resultResponse.setHandleType(false);
+        resultResponse.setHandleCode(502);
         resultResponse.setHandleMessage(message);
         resultResponse.setHandleData(null);
         return resultResponse;

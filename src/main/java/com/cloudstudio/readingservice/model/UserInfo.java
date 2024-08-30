@@ -20,6 +20,7 @@ public class UserInfo implements Serializable {
     private String mPhone;
     private String mEmail;
     private int mLevel;
+    private int mCoin;
     private int mStatus;
     private String mAddressIp;
 }

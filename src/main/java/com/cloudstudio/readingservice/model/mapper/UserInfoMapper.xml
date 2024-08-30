@@ -15,22 +15,23 @@
         <result property="mPhone" column="uPhone"/>
         <result property="mEmail" column="uEmail"/>
         <result property="mLevel" column="uLevel"/>
+        <result property="mCoin" column="uCoin"/>
         <result property="mStatus" column="uStatus"/>
         <result property="mAddressIp" column="uAddressIp"/>
     </resultMap>
 
     <!--用户信息处理逻辑-->
     <!--账号查询-->
-    <select id="infoQuery" parameterType="java.util.HashMap" resultMap="BaseInfoMap">
+    <select id="infoQuery" parameterType="String" resultMap="BaseInfoMap">
         select uId,
         uHead,
         uName,
-        uPassword,
         uSex,
         uAccount,
         uPhone,
         uEmail,
         uLevel,
+        uCoin,
         uStatus,
         uAddressIp
         from user_info_data
@@ -38,32 +39,41 @@
             <if test="account!=null">
                 uAccount=#{account}
             </if>
-            <if test="password!=null">
-                and uPassword=#{password,jdbcType=VARCHAR}
-            </if>
+<!--            <if test="password!=null">-->
+<!--                and uPassword=#{password,jdbcType=VARCHAR}-->
+<!--            </if>-->
         </where>
     </select>
 
     <!--登录-->
-    <select id="login" parameterType="java.util.HashMap" resultMap="BaseInfoMap">
-        select uId,
-        uHead,
-        uName,
-        <!--uPassword,-->
-        uSex,
-        uAccount,
-        uPhone,
-        uEmail,
-        uLevel,
-        uStatus,
-        uAddressIp
-        from user_info_data
+    <select id="login" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+<!--        select uId,-->
+<!--        uHead,-->
+<!--        uName,-->
+<!--        &lt;!&ndash;uPassword,&ndash;&gt;-->
+<!--        uSex,-->
+<!--        uAccount,-->
+<!--        uPhone,-->
+<!--        uEmail,-->
+<!--        uLevel,-->
+<!--        uStatus,-->
+<!--        uAddressIp-->
+<!--        from user_info_data-->
+<!--        <where>-->
+<!--            <if test="account!=null">-->
+<!--                uAccount=#{account,jdbcType=VARCHAR}-->
+<!--            </if>-->
+<!--            <if test="password!=null">-->
+<!--                and uPassword=#{password,jdbcType=VARCHAR}-->
+<!--            </if>-->
+<!--        </where>-->
+        SELECT COUNT(*) FROM user_info_data
         <where>
             <if test="account!=null">
-                uAccount=#{account,jdbcType=VARCHAR}
+                    uAccount=#{account,jdbcType=VARCHAR}
             </if>
             <if test="password!=null">
-                and uPassword=#{password,jdbcType=VARCHAR}
+                    and uPassword=#{password,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
@@ -104,7 +114,7 @@
     </insert>
 
     <!--更新登录状态-->
-    <update id="fresh_status_login" parameterType="java.util.HashMap">
+    <update id="fresh_login_status" parameterType="java.util.HashMap">
         update user_info_data
         <set >
             <if test="status!=0">
@@ -118,14 +128,11 @@
             <if test="account!=null">
                 uAccount=#{account,jdbcType=VARCHAR}
             </if>
-            <if test="password!=null">
-                and uPassword=#{password,jdbcType=VARCHAR}
-            </if>
         </where>
     </update>
 
     <!--登出更新状态-->
-    <update id="fresh_status_logout" parameterType="java.util.HashMap">
+    <update id="fresh_logout_status" parameterType="java.util.HashMap">
         update  user_info_data
         <set >
             <if test="status==0">
@@ -135,9 +142,6 @@
         <where>
             <if test="account!=null">
                 uAccount=#{account,jdbcType=VARCHAR}
-            </if>
-            <if test="password!=null">
-                and uPassword=#{password,jdbcType=VARCHAR}
             </if>
         </where>
     </update>

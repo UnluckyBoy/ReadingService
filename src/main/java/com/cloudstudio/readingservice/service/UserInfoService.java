@@ -12,7 +12,9 @@ import java.util.Map;
  */
 @Service
 public interface UserInfoService {
-    UserInfo infoQuery(Map<String,Object> map);;
-    UserInfo login(Map<String,Object> map);
+    UserInfo infoQuery(String account);;
+    int login(Map<String,Object> map);
     boolean register(Map<String,Object> map);
+    boolean fresh_login_status(Map<String,Object> map);
+    boolean fresh_logout_status(Map<String,Object> map);
 }

@@ -19,17 +19,27 @@ public class UserServiceIpml implements UserInfoService {
     private UserInfoMapper userInfoMapper;
 
     @Override
-    public UserInfo infoQuery(Map<String, Object> map) {
-        return userInfoMapper.infoQuery(map);
+    public UserInfo infoQuery(String account) {
+        return userInfoMapper.infoQuery(account);
     }
 
     @Override
-    public UserInfo login(Map<String, Object> map) {
+    public int login(Map<String, Object> map) {
         return userInfoMapper.login(map);
     }
 
     @Override
     public boolean register(Map<String, Object> map) {
         return userInfoMapper.register(map);
+    }
+
+    @Override
+    public boolean fresh_login_status(Map<String,Object> map) {
+        return userInfoMapper.fresh_login_status(map);
+    }
+
+    @Override
+    public boolean fresh_logout_status(Map<String, Object> map) {
+        return userInfoMapper.fresh_logout_status(map);
     }
 }

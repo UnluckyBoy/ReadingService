@@ -17,9 +17,11 @@ import java.util.Map;
 @Mapper //mybatis的mapper类
 @Repository //将mapper交由spring容器管理
 public interface UserInfoMapper {
-    UserInfo infoQuery(Map<String,Object> map);//查询
-    UserInfo login(Map<String,Object> map);//登录
+    UserInfo infoQuery(String account);//查询
+    int login(Map<String,Object> map);//登录
     boolean register(Map<String,Object> map);//注册
+    boolean fresh_login_status(Map<String,Object> map);//刷新登录信息
+    boolean fresh_logout_status(Map<String,Object> map);//登出
 
     /***分页操作***/
     /*用户信息分页*/

@@ -18,14 +18,15 @@ public class VerificationUtil {
 
     /**
      * 生成Token
-     * @param username
+     * @param account
      * @return
      */
-    public static String generateToken(String username) {
+    public static String generateToken(String account) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(account)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10小时
+                //.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 6)) // 6小时
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5min
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
