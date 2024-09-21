@@ -13,12 +13,12 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class ChatController {
-    @MessageMapping("/chat")
+    @MessageMapping("/chatPublic")
     @SendTo("/tcpTopic/public")
-    public String handleMessageFromClient(String message) throws Exception {
+    public ServerMessage handleMessageFromClient(String message) throws Exception {
         // 这里可以添加一些业务逻辑，比如验证消息、记录日志等
         System.out.println("客户端消息:"+message);
-        return message;
+        return new ServerMessage(message);
     }
 
     @MessageMapping("/clientRequest") // @MessageMapping 和 @RequestMapping 功能类似，浏览器向服务器发起消息，映射到该地址。
