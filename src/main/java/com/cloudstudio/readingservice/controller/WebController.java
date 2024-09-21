@@ -14,4 +14,9 @@ public class WebController {
     public String Index(){
         return "index";
     }
+
+    @RequestMapping("/chat")
+    public String Chat(){
+        return "chat";
+    }
 }
