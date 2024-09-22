@@ -26,6 +26,6 @@ public class ChatController {
     public ServerMessage sendMessage(ClientMessage message) throws Exception {
         System.out.println("前(客户)端消息:"+message.getRequestMessage());
         Thread.sleep(1000);//延时1S返回消息
-        return new ServerMessage("你好，" + message.getRequestMessage()+"！");
+        return new ServerMessage("服务器公告：" + message.getRequestMessage());
     }
 }
